@@ -79,9 +79,8 @@ FROM rolling_metrics;
 [CRM CSV in Blob]
         ↓
 Copy Activity → stg_crm_company_daily
-        ↓
-------------------------------------------------
-
+```
+```mermaid
 [ADF Pipeline]
         ↓
 Web Activity (Call Product API)
