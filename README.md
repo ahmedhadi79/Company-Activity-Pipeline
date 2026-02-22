@@ -75,25 +75,21 @@ SELECT
 FROM rolling_metrics;
 ```
 ## Azure Data Factory Flow
+
 ```mermaid
-[CRM CSV in Blob]
-        ↓
-Copy Activity → stg_crm_company_daily
-```
-```mermaid
-[ADF Pipeline]
-        ↓
-Web Activity (Call Product API)
-        ↓
-Azure Function / Python
-        ↓
-Write JSON to Blob (raw layer)
-        ↓
-Copy Activity → stg_product_usage_daily
-        ↓
-SQL Stored Procedure → Load fact_company_activity_daily
-        ↓
-Success / Failure Alerts
+flowchart TD
+
+    A[CRM CSV in Blob] --> B[Copy Activity → stg_crm_company_daily]
+
+    B --> C[ADF Pipeline]
+
+    C --> D[Web Activity (Call Product API)]
+    D --> E[Azure Function / Python]
+    E --> F[Write JSON to Blob (Raw Layer)]
+    F --> G[Copy Activity → stg_product_usage_daily]
+    G --> H[SQL Stored Procedure → Load fact_company_activity_daily]
+    H --> I[Success / Failure Alerts]
+
 ```
 ## Python Pseudocode for API Ingestion
 ```python
@@ -133,25 +129,25 @@ def upload_to_blob(container, file_name, data):
     # Azure Blob SDK logic here
     pass
 ```
-## 30 minutes before tomorrow’s run
+## 30 minutes before tomorrow’s run:
 I would implement first:
 
 The raw ingestion from API → Blob (with idempotency)
 
-Why?
+## Why?
 
 If raw data isn’t captured, everything downstream fails.
 
 Raw layer is foundational.
 
-You can always backfill transformations later.
+I can always backfill transformations later.
 
-What I would postpone:
+## What I would postpone:
 
-Advanced rolling metrics
+* Advanced rolling metrics
 
-Churn logic tuning
+* Churn logic tuning
 
-Optimised indexing
+* Optimised indexing
 
-Fancy error handling
+* Fancy error handling
